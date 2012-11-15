@@ -45,7 +45,7 @@ foreach ( $login->find_all() as $value )
 */		
 		
 	//Methode 3	
-	echo $LoginClass::find_all(); 
+	echo LoginClass::find_all(); 
 
 ?>
 Dit is een test voor de database class

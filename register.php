@@ -5,7 +5,7 @@ if ( isset($_POST['submit'] ))
 	require_once('class/LoginClass.php');
 	
 	//Code om de gegevens op te slaan
-	if ( LoginClass::emailaddress_exits($_POST['e-mail']) )
+	if ( LoginClass::emailaddress_exits($_POST['email']) )
 	{
 		//meldt dat email al in gebruik is
 		//er moet ander email gekozen worden	
@@ -16,6 +16,7 @@ if ( isset($_POST['submit'] ))
 	else
 	{
 		//schrijf alle gegevens naar database 
+		LoginClass::insert_into_login($_POST);
 		//verstuur een e-mail met activatie mail
 		echo "record niet gevonden";
 	}
@@ -46,6 +47,10 @@ else
 		<tr>
 			<td>zipcode</td>
 			<td><input type='text' name='zipcode' /></td>
+		</tr>
+				<tr>
+			<td>city</td>
+			<td><input type='text' name='city' /></td>
 		</tr>
 		<tr>
 			<td>country</td>

@@ -38,7 +38,7 @@ class LoginClass
 	
 	public static function find_all()
 	{
-		$quesry = "SELECT * FROM `login` ";
+		$query = "SELECT * FROM `login` ";
 		$result = self::find_by_sql($query);
 		$output = '';
 		foreach ( $result as $value )
@@ -51,8 +51,8 @@ class LoginClass
 					"<br />";
 	}
 	return $output;
-	
-	public static function e-mail_exists( $emailaddress )
+	}
+	public static function emailaddress_exits( $emailaddress )
 	{ 
 		//echo $emailaddress;exit();
 		global $database;
@@ -60,7 +60,7 @@ class LoginClass
 		$result = $database->fire_query($query);
 		//ternary operator
 		//$var (bewering) ? "Waar" : "Niet waar"
-		return mysql_num_rows($result) > 0 ) ? true : false;
+		return ( mysql_num_rows($result) > 0 ) ? true : false;
 	/*	if ( mysql_num_rows($result) > 0 ) 
 		{
 			return true;
@@ -72,5 +72,55 @@ class LoginClass
 	*/
 		//echo $query
  	}
+	
+	public static function insert_into_login($postarray)
+	{
+		global $database;
+		//Genereer de datum
+		date_default_timezone_set("Europe/Amsterdam");
+		$date = date("Y-m-d H:i:s");
+		//Maak een password van het email en de tijd en stop dit in een MD5-hash
+		$temp_password = MD5($date.$postarray['email']); //32 tekens in Hex
+		//echo $date;	
+		$query = "INSERT INTO `login` ( `id`,
+										`username`,
+										`password`,
+										`userrole`,
+										`activated`,
+                                        `datetime`) 
+							   VALUES ( Null,
+										'".$postarray['email']."', 
+										'".$temp_password."',
+										'customer',
+										'no',
+										'".$date."')";
+	$database->fire_query($query);	
+	//Opvragen van het id van de zojuist in de tabel login weggeschreven user.
+	$query = "SELECT * FROM `login` WHERE `username` = '".$postarray['email']."'";
+	$result = array_shift (self::find_by_sql($query))->id; exit();
+	$query = "INSERT INTO `user` (  `id`,
+									`firstname`,
+									`infix`,
+									`surname`,
+									`address`,
+									`addressnumber`,
+									`city`,
+									`zipcode`,
+									`country`,
+									`phonenumber`,
+									`mobilenumber`)
+						   VALUES ( '".$id."',
+									'".$postarray['firstname']."',
+									'".$postarray['infix']."',
+									'".$postarray['surname']."',
+									'".$postarray['address']."',
+									'".$postarray['addressnumber']."',
+									'".$postarray['city']."',
+									'".$postarray['zipcode']."',
+									'".$postarray['country']."',
+									'".$postarray['phonenumber']."',
+									'".$postarray['mobilenumber']."' )";
+	$database->fire_query($query);
+	}
 }
 ?>

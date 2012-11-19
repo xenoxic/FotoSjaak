@@ -18,7 +18,7 @@ if ( isset($_POST['submit'] ))
 		//schrijf alle gegevens naar database 
 		LoginClass::insert_into_login($_POST);
 		//verstuur een e-mail met activatie mail
-		echo "record niet gevonden";
+		echo "Uw Activatie email is verzonden.";
 	}
 	
 }
@@ -35,6 +35,10 @@ else
 		<tr>
 			<td>infix</td>
 			<td><input type='text' name='infix' /></td>
+		</tr>
+		<tr>
+			<td>surname</td>
+			<td><input type='text' name='surname' /></td>
 		</tr>
 		<tr>
 			<td>address</td>
@@ -70,7 +74,7 @@ else
 		</tr>		
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type='submit' name='submit' /></td>
+			<td><input type='submit' name='submit' value='verstuur' /></td>
 		</tr>		
 	</table>
 </form>

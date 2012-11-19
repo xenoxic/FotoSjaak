@@ -13,7 +13,7 @@ class LoginClass
 	//Properties
 	
 	//Consturctor
-	public function __construction()
+	public function __construct()
 	{
 		
 	}
@@ -82,6 +82,7 @@ class LoginClass
 		//Maak een password van het email en de tijd en stop dit in een MD5-hash
 		$temp_password = MD5($date.$postarray['email']); //32 tekens in Hex
 		//echo $date;	
+	//	echo "hello";
 		$query = "INSERT INTO `login` ( `id`,
 										`username`,
 										`password`,
@@ -94,10 +95,12 @@ class LoginClass
 										'customer',
 										'no',
 										'".$date."')";
+	//echo "hello3";
 	$database->fire_query($query);	
 	//Opvragen van het id van de zojuist in de tabel login weggeschreven user.
 	$query = "SELECT * FROM `login` WHERE `username` = '".$postarray['email']."'";
-	$result = array_shift (self::find_by_sql($query))->id; exit();
+	$id = array_shift (self::find_by_sql($query))->id;
+	//echo "hello5";
 	$query = "INSERT INTO `user` (  `id`,
 									`firstname`,
 									`infix`,
@@ -120,7 +123,47 @@ class LoginClass
 									'".$postarray['country']."',
 									'".$postarray['phonenumber']."',
 									'".$postarray['mobilenumber']."' )";
-	$database->fire_query($query);
-	}
+		//echo "hello4";
+		$database->fire_query($query);
+		self::send_activation_email($postarray['email'], $temp_password, $postarray['firstname'], $postarray['infix'], $postarray['surname']);
+		//echo "hello1";
+		}
+		public static function send_activation_email($email, $password, $firstname, $infix, $surname)
+		{
+			//echo $email."<br />".$password; exit();
+			$carbonCopy = "sjaak@fotosjaak.nl";
+			$blindCarbonCopy = "info@belastingdienst.nl";
+			$ontvanger  = $email;
+			$onderwerp  = "Activation-mail for Fotosjaak ";
+			/*$bericht    = "Geachte heer/mevrouw ".$firstname." ".$infix." ".$surname."\r\n
+			Voor u kunt inloggen moet uw account worden geactiveerd. \r\n
+			Klik hiervoor op de onderstaande Activatie link: \r\n
+			http://localhost/2012-2013/blok2/activatie.php?em=".$email."&pw=".$password."\r\n
+			Met vriendelijke groet, \r\n
+			\r\n
+			Timon van Woerden \r\n
+			Uw fotograaf.";*/
+			$bericht    = "Geachte heer/mevrouw ".$firstname." ".$infix." ".$surname."\r\n
+			Voor u kunt inloggen moet uw account worden geactiveerd. \r\n
+			Klik hiervoor op de onderstaande Activatie link: \r\n
+			<a href=http://localhost/2012-2013/blok2/activatie.php?em=".$email."&pw=".$password.">activeer account</a><br />
+			Met vriendelijke groet, \r\n
+			\r\n
+			Timon van Woerden \r\n
+			Uw fotograaf.";
+			$headers   = "From: info@fotosjaak.nl \r\n";
+			$headers   = "Reply-To: info@fotosjaak.nl \r\n"; 
+			$headers   = "Cc: ".$carbonCopy."\r\n";
+			$headers   = "Bcc: ".$blindCarbonCopy."\r\n";
+			$headers   = "X-mailer: PHP/".phpversion()."\r\n";
+			$headers   = "MIME-version: 1.0 \r\n";
+		//  $headers   = "Content-Type: text/plain; charset=iso-iso-8859-l\r\n";
+			$headers   = "Content-Type: text/html; charset=iso-iso-8859-l\r\n";
+			
+			//mail( $ontvanger, $onderwerp, $bericht, $headers );
+			mail($ontvanger, $onderwerp, $bericht, $headers);
+			//echo "hallo dan";exit();
+		}
+		
 }
 ?>

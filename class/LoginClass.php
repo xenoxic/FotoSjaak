@@ -95,12 +95,10 @@ class LoginClass
 										'customer',
 										'no',
 										'".$date."')";
-	//echo "hello3";
 	$database->fire_query($query);	
 	//Opvragen van het id van de zojuist in de tabel login weggeschreven user.
 	$query = "SELECT * FROM `login` WHERE `username` = '".$postarray['email']."'";
 	$id = array_shift (self::find_by_sql($query))->id;
-	//echo "hello5";
 	$query = "INSERT INTO `user` (  `id`,
 									`firstname`,
 									`infix`,
@@ -123,10 +121,8 @@ class LoginClass
 									'".$postarray['country']."',
 									'".$postarray['phonenumber']."',
 									'".$postarray['mobilenumber']."' )";
-		//echo "hello4";
 		$database->fire_query($query);
 		self::send_activation_email($postarray['email'], $temp_password, $postarray['firstname'], $postarray['infix'], $postarray['surname']);
-		//echo "hello1";
 		}
 		public static function send_activation_email($email, $password, $firstname, $infix, $surname)
 		{
@@ -162,7 +158,7 @@ class LoginClass
 			
 			//mail( $ontvanger, $onderwerp, $bericht, $headers );
 			mail($ontvanger, $onderwerp, $bericht, $headers);
-			//echo "hallo dan";exit();
+			
 		}
 		
 }

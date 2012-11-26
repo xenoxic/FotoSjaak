@@ -18,7 +18,8 @@ if ( isset($_POST['submit'] ))
 		//schrijf alle gegevens naar database 
 		LoginClass::insert_into_login($_POST);
 		//verstuur een e-mail met activatie mail
-		echo "Uw Activatie email is verzonden.";
+		echo "Registratie succes. <br /> Uw Activatie email is verzonden.";
+		header("refresh:3;url=index.php")
 	}
 	
 }
